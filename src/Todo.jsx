@@ -11,9 +11,11 @@ function Todo() {
             setNewTodo('')
         }
     }
-    // const handleDelete = (index) => {
-
-    // }
+    const handleDelete = (index) => {
+        const newTodos = [...todos]
+        newTodos[index].completed = !newTodos[index].completed
+        setTodos(newTodos)
+    }
   return (
     <div>
         <h1>Todo app </h1>
@@ -29,8 +31,8 @@ function Todo() {
         <ul>
             {todos.map((todo , index) => (
                 <li key={index}>
-                    <span >{todo.text}</span>
-                    <button onClick={() => handleDelete(index)}></button>
+                    <span style={ {textDecoration:todo.completed?'line-through' : 'none '}}>{todo.text}</span>
+                    <button onClick={() => handleDelete(index)}>Delete</button>
                 </li>
             ))}
         </ul>
