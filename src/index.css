@@ -75,3 +75,23 @@ li {
     animation: fadeIn 0.2s ease-in;
 }
 
+li:last-child {
+    border-bottom: none;
+}
+
+li span {
+    flex: 1;
+    padding-right: 10px;
+    word-break: break-word;
+}
+
+li button {
+    background: #e74c3c;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+}
+
+li button:hover {
+    background: #c0392b;
+}
+
