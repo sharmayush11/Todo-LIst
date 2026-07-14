@@ -1,43 +1,58 @@
-import {useState} from 'react'
+import { useState } from 'react'
 
 function Todo() {
-    const [newTodo , setNewTodo] = useState("")
-    const [todos , setTodos] = useState([])
+    const [newTodo, setNewTodo] = useState("")
+    const [todos, setTodos] = useState([])
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        if (newTodo) {
-            setTodos([...todos , {text:newTodo , completed:false}])    //key-value where text and completed are keys whereas newTodo and false are values
+        const trimmed = newTodo.trim()
+        if (trimmed) {
+            setTodos([...todos, { id: Date.now(), text: trimmed, completed: false }])
             setNewTodo('')
         }
     }
-    const handleDelete = (index) => {
-        const newTodos = [...todos]
-        newTodos[index].completed = !newTodos[index].completed
-        setTodos(newTodos)
+
+    const toggleComplete = (id) => {
+        setTodos(todos.map(todo =>
+            todo.id === id ? { ...todo, completed: !todo.completed } : todo
+        ))
     }
-  return (
-    <div>
-        <h1>Todo app </h1>
-        <form onSubmit={handleSubmit}>
-            <input 
-                type="text" 
-                placeholder="add new todo"
-                value={newTodo}
-                onChange={(e) => setNewTodo(e.target.value)}
-            />
-            <button type="sub"> Add todo </button>
-        </form>
-        <ul>
-            {todos.map((todo , index) => (
-                <li key={index}>
-                    <span style={ {textDecoration:todo.completed?'line-through' : 'none '}}>{todo.text}</span>
-                    <button onClick={() => handleDelete(index)}>Delete</button>
-                </li>
-            ))}
-        </ul>
-    </div>
-  )
+
+    const handleDelete = (id) => {
+        setTodos(todos.filter(todo => todo.id !== id))
+    }
+
+    return (
+        <div>
+            <h1>Todo app</h1>
+            <form onSubmit={handleSubmit}>
+                <input
+                    type="text"
+                    placeholder="add new todo"
+                    value={newTodo}
+                    onChange={(e) => setNewTodo(e.target.value)}
+                />
+                <button type="submit">Add todo</button>
+            </form>
+            <ul>
+                {todos.map((todo) => (
+                    <li key={todo.id}>
+                        <span
+                            onClick={() => toggleComplete(todo.id)}
+                            style={{
+                                textDecoration: todo.completed ? 'line-through' : 'none',
+                                cursor: 'pointer'
+                            }}
+                        >
+                            {todo.text}
+                        </span>
+                        <button onClick={() => handleDelete(todo.id)}>Delete</button>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    )
 }
 
 export default Todo
